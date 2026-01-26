@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 熊猫堂版 - 合成游戏</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FFF8E7 0%, #FFE8D6 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .title-font {
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        /* 背景装饰动物剪影 */
+        .bg-decoration {
+            position: fixed;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-paw-1 {
+            top: 10%;
+            left: 5%;
+            font-size: 120px;
+            transform: rotate(-15deg);
+        }
+        
+        .bg-paw-2 {
+            bottom: 15%;
+            right: 8%;
+            font-size: 150px;
+            transform: rotate(25deg);
+        }
+        
+        .bg-heart {
+            top: 60%;
+            left: 10%;
+            font-size: 80px;
+            transform: rotate(-10deg);
+        }
+        
+        /* 游戏容器 */
+        .game-container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 分数卡片悬浮效果 */
+        .score-card {
+            background: white;
+            border-radius: 20px;
+            padding: 16px 24px;
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.15);
+            transform: translateY(0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .score-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(255, 107, 107, 0.2);
+        }
+        
+        .score-card-offset {
+            transform: rotate(-1deg) translateY(0);
+        }
+        
+        .score-card-offset:hover {
+            transform: rotate(-1deg) translateY(-4px);
+        }
+        
+        /* 游戏板 */
+        .game-board {
+            background: #F4E1C1;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.1),
+                inset 0 2px 8px rgba(0, 0, 0, 0.05);
+            transform: rotate(0.5deg);
+            position: relative;
+            touch-action: none; /* 禁止触摸滚动 */
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        /* 游戏网格容器 */
+        #gameGrid {
+            position: relative;
+        }
+        
+        /* 格子 */
+        .grid-cell {
+            background: #E8D5B7;
+            border-radius: 16px;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: visible;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 动物方块 */
+        .tile {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: all 0.15s ease-in-out;
+        }
+        
+        .tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+        
+        .tile-value {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2C3E50;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 动物方块颜色（备用，当图片未加载时显示） */
+        .tile-2 { background: linear-gradient(135deg, #FFB6C1 0%, #FF9CB0 100%); }
+        .tile-4 { background: linear-gradient(135deg, #FFD93D 0%, #FFC933 100%); }
+        .tile-8 { background: linear-gradient(135deg, #6BCF7F 0%, #5BC06F 100%); }
+        .tile-16 { background: linear-gradient(135deg, #87CEEB 0%, #77BEDB 100%); }
+        .tile-32 { background: linear-gradient(135deg, #FFA07A 0%, #FF9070 100%); }
+        .tile-64 { background: linear-gradient(135deg, #DDA0DD 0%, #CD90CD 100%); }
+        .tile-128 { background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%); }
+        .tile-256 { background: linear-gradient(135deg, #FF8C00 0%, #FF7C00 100%); }
+        .tile-512 { background: linear-gradient(135deg, #C0C0C0 0%, #B0B0B0 100%); }
+        .tile-1024 { background: linear-gradient(135deg, #FFE4E1 0%, #FFD4D1 100%); }
+        .tile-2048 { background: linear-gradient(135deg, #FFD700 0%, #FF69B4 100%); }
+        
+        /* 按钮样式 */
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF5555 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 14px 28px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        /* 游戏结束遮罩 */
+        .game-over-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 248, 231, 0.95);
+            border-radius: 24px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+        }
+        
+        .game-over-overlay.active {
+            display: flex;
+        }
+        
+        /* 动画 */
+        @keyframes slideIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .tile-new {
+            animation: slideIn 0.2s ease-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .game-board {
+                transform: rotate(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decoration bg-paw-1">🐾</div>
+    <div class="bg-decoration bg-paw-2">🐾</div>
+    <div class="bg-decoration bg-heart">❤️</div>
+    
+    <div class="game-container min-h-screen py-8 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- 标题区域 -->
+            <div class="text-center mb-8">
+                <h1 class="title-font text-6xl mb-3" style="color: #FF6B6B;">
+                    <i class="fas fa-paw" style="color: #FFD93D;"></i>
+                    2048 熊猫堂
+                </h1>
+                <p class="text-lg text-gray-600">合并相同的成员，升级熊猫堂！</p>
+            </div>
+            
+            <!-- 游戏主区域 -->
+            <div class="grid md:grid-cols-12 gap-8 items-start">
+                <!-- 左侧信息栏 -->
+                <div class="md:col-span-4 space-y-6">
+                    <!-- 分数卡片 -->
+                    <div class="score-card">
+                        <div class="text-sm text-gray-500 mb-1 flex items-center gap-2">
+                            <i class="fas fa-star" style="color: #FFD93D;"></i>
+                            当前分数
+                        </div>
+                        <div class="text-4xl font-bold" style="color: #FF6B6B;">0</div>
+                    </div>
+                    
+                    <div class="score-card score-card-offset">
+                        <div class="text-sm text-gray-500 mb-1 flex items-center gap-2">
+                            <i class="fas fa-trophy" style="color: #FFD93D;"></i>
+                            最高分
+                        </div>
+                        <div class="text-3xl font-bold" style="color: #6BCF7F;">0</div>
+                    </div>
+                    
+                    <!-- 控制按钮 -->
+                    <div class="space-y-3">
+                        <button class="btn-primary w-full" id="newGameBtn">
+                            <i class="fas fa-rotate"></i>
+                            新游戏
+                        </button>
+                        <button class="btn-primary w-full" style="background: linear-gradient(135deg, #6BCF7F 0%, #5BC06F 100%);" id="undoBtn">
+                            <i class="fas fa-undo"></i>
+                            撤销
+                        </button>
+                    </div>
+                    
+                    <!-- 说明卡片 -->
+                    <div class="score-card">
+                        <h3 class="font-semibold text-lg mb-2 flex items-center gap-2">
+                            <i class="fas fa-circle-info" style="color: #FF6B6B;"></i>
+                            游戏说明
+                        </h3>
+                        <div class="text-sm text-gray-600 space-y-2">
+                            <p><i class="fas fa-keyboard text-gray-400"></i> 使用方向键移动</p>
+                            <p><i class="fas fa-hand-pointer text-gray-400"></i> 触摸屏可滑动</p>
+                            <p><i class="fas fa-users text-gray-400"></i> 合并相同成员升级</p>
+                            <p><i class="fas fa-crown text-gray-400"></i> 目标：合成堂主(2048)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 游戏板 -->
+                <div class="md:col-span-8">
+                    <div class="game-board relative">
+                        <div class="grid grid-cols-4 gap-4" id="gameGrid">
+                            <!-- 16个格子 -->
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                            <div class="grid-cell"></div>
+                        </div>
+                        
+                        <!-- 游戏结束遮罩 -->
+                        <div class="game-over-overlay" id="gameOverOverlay">
+                            <div class="text-6xl mb-4">😿</div>
+                            <div class="text-3xl font-bold title-font" style="color: #FF6B6B;">游戏结束</div>
+                            <div class="text-xl text-gray-600">最终分数: <span id="finalScore">0</span></div>
+                            <button class="btn-primary mt-4" onclick="location.reload()">
+                                <i class="fas fa-rotate"></i>
+                                再来一局
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 成员图鉴 -->
+                    <div class="mt-8 score-card">
+                        <h3 class="font-semibold text-lg mb-4 flex items-center gap-2">
+                            <i class="fas fa-book" style="color: #FFD93D;"></i>
+                            熊猫堂成员
+                        </h3>
+                        <div class="text-sm text-gray-600">
+                            <p class="mb-2"><i class="fas fa-info-circle text-gray-400"></i> 从2开始合成</p>
+                            <p><i class="fas fa-trophy text-gray-400"></i> 挑战目标：2048 堂主</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="game-v2.js"></script>
+</body>
+</html>

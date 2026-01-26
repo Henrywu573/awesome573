@@ -1,0 +1,5 @@
+.cursor/
+rules/
+.DS_Store
+deploy.sh
+README.md
