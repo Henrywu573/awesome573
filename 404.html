@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found – 2048 Panda Group</title>
+    <meta name="description"
+        content="Oops! The page you're looking for doesn't exist. Head back to 2048 Panda Group and keep merging!">
+    <meta name="robots" content="noindex, follow">
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3593835256513437"
+        crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FFF8E7 0%, #FFE8D6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .title-font {
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .container {
+            background: white;
+            border-radius: 28px;
+            padding: 60px 48px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 12px 40px rgba(255, 107, 107, 0.15);
+        }
+
+        .emoji {
+            font-size: 80px;
+            margin-bottom: 16px;
+            display: block;
+            line-height: 1;
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 4rem;
+            color: #FF6B6B;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.6rem;
+            color: #2C3E50;
+            margin-bottom: 16px;
+        }
+
+        p {
+            color: #777;
+            line-height: 1.7;
+            margin-bottom: 32px;
+            font-size: 15px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #FF6B6B, #FF5555);
+            color: white;
+            border-radius: 16px;
+            padding: 16px 32px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 17px;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(255, 107, 107, 0.45);
+        }
+
+        .links {
+            margin-top: 24px;
+        }
+
+        .links a {
+            color: #FF6B6B;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Paw print decorations */
+        .paw {
+            position: fixed;
+            opacity: 0.04;
+            pointer-events: none;
+            font-size: 120px;
+        }
+
+        .paw-1 {
+            top: 10%;
+            left: 5%;
+            transform: rotate(-20deg);
+        }
+
+        .paw-2 {
+            bottom: 10%;
+            right: 5%;
+            transform: rotate(15deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="paw paw-1">🐾</div>
+    <div class="paw paw-2">🐾</div>
+
+    <div class="container">
+        <span class="emoji">😿</span>
+        <h1>404</h1>
+        <h2>Page Not Found</h2>
+        <p>
+            Oops! Looks like you've wandered off the grid. This tile doesn't exist —
+            but the Grand Master is waiting for you back on the board!
+        </p>
+        <a href="index.html" class="btn">
+            <i class="fas fa-paw"></i>
+            Back to the Game
+        </a>
+        <div class="links">
+            <a href="about.html">About</a>
+            <a href="privacy.html">Privacy Policy</a>
+        </div>
+    </div>
+</body>
+
+</html>

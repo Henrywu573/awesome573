@@ -1,33 +1,33 @@
-// 2048 宠物版游戏逻辑
+// 2048 Panda Group – Game Logic
 
-// 熊猫堂成员图片映射 (使用本地图片)
+// Panda Group member image map (local images)
 const ANIMAL_IMAGES = {
-    2: 'images/xiongmaotang/1.jpeg',     // 成员1
-    4: 'images/xiongmaotang/2.jpeg',     // 成员2
-    8: 'images/xiongmaotang/3.jpeg',     // 成员3
-    16: 'images/xiongmaotang/4.jpeg',    // 成员4
-    32: 'images/xiongmaotang/5.jpeg',    // 成员5
-    64: 'images/xiongmaotang/6.jpeg',    // 成员6
-    128: 'images/xiongmaotang/7.jpeg',   // 成员7
-    256: 'images/xiongmaotang/8.jpeg',   // 成员8
-    512: 'images/xiongmaotang/9.jpeg',   // 成员9
-    1024: 'images/xiongmaotang/10.jpeg', // 成员10
-    2048: 'images/xiongmaotang/11.jpeg'  // 堂主
+    2: 'images/xiongmaotang/1.jpeg',     // Panda Cub
+    4: 'images/xiongmaotang/2.jpeg',     // Bamboo Scout
+    8: 'images/xiongmaotang/3.jpeg',     // Mountain Guard
+    16: 'images/xiongmaotang/4.jpeg',    // Forest Keeper
+    32: 'images/xiongmaotang/5.jpeg',    // River Ranger
+    64: 'images/xiongmaotang/6.jpeg',    // Peak Climber
+    128: 'images/xiongmaotang/7.jpeg',   // Valley Elder
+    256: 'images/xiongmaotang/8.jpeg',   // Sky Ranger
+    512: 'images/xiongmaotang/9.jpeg',   // Cloud Walker
+    1024: 'images/xiongmaotang/10.jpeg', // Grand Elder
+    2048: 'images/xiongmaotang/11.jpeg'  // Grand Master
 };
 
-// 熊猫堂成员名称
+// Panda Group member names
 const ANIMAL_NAMES = {
-    2: '成员',
-    4: '成员',
-    8: '成员',
-    16: '成员',
-    32: '成员',
-    64: '成员',
-    128: '成员',
-    256: '成员',
-    512: '成员',
-    1024: '成员',
-    2048: '堂主'
+    2: 'Panda Cub',
+    4: 'Bamboo Scout',
+    8: 'Mountain Guard',
+    16: 'Forest Keeper',
+    32: 'River Ranger',
+    64: 'Peak Climber',
+    128: 'Valley Elder',
+    256: 'Sky Ranger',
+    512: 'Cloud Walker',
+    1024: 'Grand Elder',
+    2048: 'Grand Master'
 };
 
 class Game2048 {
@@ -36,22 +36,22 @@ class Game2048 {
         this.score = 0;
         this.bestScore = this.loadBestScore();
         this.gameOver = false;
-        this.history = []; // 历史记录，用于撤销
+        this.history = []; // move history for undo
         
         this.initGame();
         this.setupEventListeners();
         this.render();
-        this.updateUndoButton(); // 初始化撤销按钮状态
+        this.updateUndoButton(); // initialize undo button state
     }
     
     initGame() {
-        // 初始化两个随机方块
+        // Spawn two random starting tiles
         this.addRandomTile();
         this.addRandomTile();
     }
     
     setupEventListeners() {
-        // 键盘事件
+        // Keyboard events
         document.addEventListener('keydown', (e) => {
             if (this.gameOver) return;
             
@@ -79,14 +79,14 @@ class Game2048 {
             }
         });
         
-        // 触摸事件
+        // Touch events
         let touchStartX = 0;
         let touchStartY = 0;
         
         const gameGrid = document.getElementById('gameGrid');
         const gameBoard = document.querySelector('.game-board');
         
-        // 阻止游戏板区域的默认触摸行为
+        // Prevent default touch behaviors on the game board
         gameBoard.addEventListener('touchstart', (e) => {
             e.preventDefault();
         }, { passive: false });
@@ -112,16 +112,16 @@ class Game2048 {
             
             let moved = false;
             
-            // 判断滑动方向
+            // Determine swipe direction
             if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                // 水平滑动
+                // Horizontal swipe
                 if (deltaX > 30) {
                     moved = this.move('right');
                 } else if (deltaX < -30) {
                     moved = this.move('left');
                 }
             } else {
-                // 垂直滑动
+                // Vertical swipe
                 if (deltaY > 30) {
                     moved = this.move('down');
                 } else if (deltaY < -30) {
@@ -138,19 +138,19 @@ class Game2048 {
             e.preventDefault();
         }, { passive: false });
         
-        // 新游戏按钮
+        // New Game button
         document.getElementById('newGameBtn').addEventListener('click', () => {
             this.resetGame();
         });
         
-        // 撤销按钮
+        // Undo button
         document.getElementById('undoBtn').addEventListener('click', () => {
             this.undo();
         });
     }
     
     move(direction) {
-        // 保存当前状态到历史记录
+        // Save current state before moving
         this.saveState();
         
         const oldGrid = JSON.stringify(this.grid);
@@ -166,10 +166,10 @@ class Game2048 {
             this.moveDown();
         }
         
-        // 检查是否有移动
+        // Check if any tile actually moved
         const moved = oldGrid !== JSON.stringify(this.grid);
         
-        // 如果没有移动，移除刚才保存的状态
+        // If nothing moved, discard the saved state
         if (!moved) {
             this.history.pop();
         }
@@ -178,13 +178,13 @@ class Game2048 {
     }
     
     saveState() {
-        // 保存当前游戏状态
+        // Save current game state to history
         this.history.push({
             grid: JSON.parse(JSON.stringify(this.grid)),
             score: this.score
         });
         
-        // 限制历史记录最多10步
+        // Keep at most 10 moves of undo history
         if (this.history.length > 10) {
             this.history.shift();
         }
@@ -195,7 +195,7 @@ class Game2048 {
     undo() {
         if (this.history.length === 0) return;
         
-        // 恢复上一个状态
+        // Restore previous state
         const lastState = this.history.pop();
         this.grid = lastState.grid;
         this.score = lastState.score;
@@ -224,7 +224,7 @@ class Game2048 {
         for (let i = 0; i < 4; i++) {
             let row = this.grid[i].filter(x => x !== 0);
             
-            // 合并相同的
+            // Merge identical adjacent tiles
             for (let j = 0; j < row.length - 1; j++) {
                 if (row[j] === row[j + 1]) {
                     row[j] *= 2;
@@ -233,7 +233,7 @@ class Game2048 {
                 }
             }
             
-            // 填充0
+            // Pad with zeros
             while (row.length < 4) {
                 row.push(0);
             }
@@ -246,7 +246,7 @@ class Game2048 {
         for (let i = 0; i < 4; i++) {
             let row = this.grid[i].filter(x => x !== 0);
             
-            // 从右往左合并
+            // Merge right-to-left
             for (let j = row.length - 1; j > 0; j--) {
                 if (row[j] === row[j - 1]) {
                     row[j] *= 2;
@@ -256,7 +256,7 @@ class Game2048 {
                 }
             }
             
-            // 在前面填充0
+            // Pad zeros on the left
             while (row.length < 4) {
                 row.unshift(0);
             }
@@ -274,7 +274,7 @@ class Game2048 {
                 }
             }
             
-            // 合并相同的
+            // Merge identical adjacent tiles
             for (let i = 0; i < column.length - 1; i++) {
                 if (column[i] === column[i + 1]) {
                     column[i] *= 2;
@@ -283,12 +283,12 @@ class Game2048 {
                 }
             }
             
-            // 填充0
+            // Pad with zeros
             while (column.length < 4) {
                 column.push(0);
             }
             
-            // 放回网格
+            // Write back to grid
             for (let i = 0; i < 4; i++) {
                 this.grid[i][j] = column[i];
             }
@@ -304,7 +304,7 @@ class Game2048 {
                 }
             }
             
-            // 从下往上合并
+            // Merge bottom-to-top
             for (let i = column.length - 1; i > 0; i--) {
                 if (column[i] === column[i - 1]) {
                     column[i] *= 2;
@@ -314,12 +314,12 @@ class Game2048 {
                 }
             }
             
-            // 在前面填充0
+            // Pad zeros on the top
             while (column.length < 4) {
                 column.unshift(0);
             }
             
-            // 放回网格
+            // Write back to grid
             for (let i = 0; i < 4; i++) {
                 this.grid[i][j] = column[i];
             }
@@ -339,13 +339,13 @@ class Game2048 {
         
         if (emptyCells.length > 0) {
             const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-            // 90%概率生成2，10%概率生成4
+            // 90% chance of spawning a 2, 10% chance of a 4
             this.grid[randomCell.i][randomCell.j] = Math.random() < 0.9 ? 2 : 4;
         }
     }
     
     checkGameOver() {
-        // 检查是否有空格
+        // Check for empty cells
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
                 if (this.grid[i][j] === 0) {
@@ -354,7 +354,7 @@ class Game2048 {
             }
         }
         
-        // 检查是否有可合并的
+        // Check for possible merges
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
                 const current = this.grid[i][j];
@@ -368,7 +368,7 @@ class Game2048 {
             }
         }
         
-        // 游戏结束
+        // No moves left – game over
         this.gameOver = true;
         this.showGameOver();
     }
@@ -382,7 +382,7 @@ class Game2048 {
         this.grid = Array(4).fill(null).map(() => Array(4).fill(0));
         this.score = 0;
         this.gameOver = false;
-        this.history = []; // 清空历史记录
+        this.history = []; // clear undo history
         document.getElementById('gameOverOverlay').classList.remove('active');
         this.initGame();
         this.render();
@@ -393,7 +393,7 @@ class Game2048 {
         const gameGrid = document.getElementById('gameGrid');
         const gridCells = gameGrid.querySelectorAll('.grid-cell');
         
-        // 清空所有格子中的方块
+        // Clear all tiles from cells
         gridCells.forEach(cell => {
             const existingTile = cell.querySelector('.tile');
             if (existingTile) {
@@ -401,7 +401,7 @@ class Game2048 {
             }
         });
         
-        // 渲染新方块
+        // Render current tiles
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
                 const value = this.grid[i][j];
@@ -411,17 +411,17 @@ class Game2048 {
             }
         }
         
-        // 更新分数
+        // Update current score display
         document.querySelector('.score-card .text-4xl').textContent = this.score;
         
-        // 更新最高分
+        // Update best score
         if (this.score > this.bestScore) {
             this.bestScore = this.score;
             this.saveBestScore();
         }
         document.querySelector('.score-card-offset .text-3xl').textContent = this.bestScore;
         
-        // 更新撤销按钮状态
+        // Refresh undo button state
         this.updateUndoButton();
     }
     
@@ -434,28 +434,28 @@ class Game2048 {
         const tile = document.createElement('div');
         tile.className = `tile tile-${value} tile-new`;
         
-        // 创建图片
+        // Create member photo image
         const img = document.createElement('img');
         img.src = ANIMAL_IMAGES[value] || ANIMAL_IMAGES[2];
-        img.alt = ANIMAL_NAMES[value] || '动物';
+        img.alt = ANIMAL_NAMES[value] || 'Member';
         img.onerror = function() {
-            // 图片加载失败时显示emoji
+            // Fallback emoji if image fails to load
             this.style.display = 'none';
             const emoji = document.createElement('div');
             emoji.style.fontSize = '48px';
-            emoji.textContent = ['🐱','🐶','🐰','🐻','🦊','🐼','🦁','🐯','🐨','🦄','🐉'][Math.log2(value)-1] || '🐱';
+            emoji.textContent = ['🐱','🐶','🐰','🐻','🦊','🐼','🦁','🐯','🐨','🦄','🐉'][Math.log2(value)-1] || '🐼';
             tile.appendChild(emoji);
         };
         
         tile.appendChild(img);
         
-        // 添加数值标签
+        // Add numeric value label
         const valueLabel = document.createElement('div');
         valueLabel.className = 'tile-value';
         valueLabel.textContent = value;
         tile.appendChild(valueLabel);
         
-        // 直接添加到对应的格子中
+        // Append tile to the correct grid cell
         cell.appendChild(tile);
     }
     
@@ -468,7 +468,7 @@ class Game2048 {
     }
 }
 
-// 初始化游戏
+// Initialize the game on page load
 let game;
 window.addEventListener('DOMContentLoaded', () => {
     game = new Game2048();

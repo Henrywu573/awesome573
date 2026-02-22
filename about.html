@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About – 2048 Panda Group</title>
+    <meta name="description"
+        content="Learn about 2048 Panda Group – a free browser-based merge puzzle game built by a panda fan, featuring all 11 Panda Group members as game tiles.">
+    <meta name="robots" content="index, follow">
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3593835256513437"
+        crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FFF8E7 0%, #FFE8D6 100%);
+            min-height: 100vh;
+        }
+
+        .title-font {
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.12);
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            color: #FF6B6B;
+        }
+
+        h2 {
+            font-family: 'Fredoka One', cursive;
+            color: #2C3E50;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #FF6B6B, #FF5555);
+            color: white;
+            border-radius: 12px;
+            padding: 10px 22px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 4px 14px rgba(255, 107, 107, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(255, 107, 107, 0.4);
+        }
+
+        .tech-badge {
+            display: inline-block;
+            background: #FFF0E8;
+            color: #FF6B6B;
+            border: 1px solid #FFD0BC;
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 4px;
+        }
+
+        footer {
+            background: #2C3E50;
+            color: #aaa;
+            padding: 24px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        footer a {
+            color: #FFD93D;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        ul.feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul.feature-list li {
+            padding: 6px 0;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        ul.feature-list li i {
+            color: #FF6B6B;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="max-w-3xl mx-auto py-12 px-6">
+
+        <!-- Back link -->
+        <div class="mb-8">
+            <a href="index.html" class="nav-link">
+                <i class="fas fa-arrow-left"></i> Back to Game
+            </a>
+        </div>
+
+        <!-- Title -->
+        <div class="text-center mb-10">
+            <h1 class="text-5xl mb-3"><i class="fas fa-paw" style="color:#FFD93D;"></i> About</h1>
+            <p class="text-xl text-gray-500">2048 Panda Group</p>
+        </div>
+
+        <!-- About the game -->
+        <div class="card">
+            <h2><i class="fas fa-gamepad" style="color:#FF6B6B; margin-right:8px;"></i>About the Game</h2>
+            <p>
+                <strong>2048 Panda Group</strong> is a free, browser-based merge puzzle game inspired by the original
+                2048
+                created by Gabriele Cirulli in 2014. Instead of plain numbered tiles, every tile in this version
+                displays
+                a real photo of a Panda Group fan community member — making each merge feel like leveling up a
+                character.
+            </p>
+            <p>
+                The game is played on a 4×4 grid. You slide tiles using arrow keys or touch swipes. When two tiles of
+                the
+                same value collide, they merge into one tile with double the value. The goal is to reach the legendary
+                <strong>2048 — Grand Master</strong> tile, unlocking the final and most powerful member of the Panda
+                Group.
+            </p>
+            <p>
+                Every session is different. Your best score is automatically saved to your browser so you can track your
+                personal records over time. No sign-up, no account, no downloads — just open the page and play.
+            </p>
+            <ul class="feature-list mt-2">
+                <li><i class="fas fa-check-circle"></i> 11 unique Panda Group member tiles (values 2 through 2048)</li>
+                <li><i class="fas fa-check-circle"></i> Undo up to 10 moves to recover from mistakes</li>
+                <li><i class="fas fa-check-circle"></i> Local best-score persistence via browser storage</li>
+                <li><i class="fas fa-check-circle"></i> Responsive design — works on desktop, tablet, and mobile</li>
+                <li><i class="fas fa-check-circle"></i> Keyboard (arrow keys) and touch (swipe) controls</li>
+                <li><i class="fas fa-check-circle"></i> Zero ads on non-game pages — clean and distraction-free</li>
+            </ul>
+        </div>
+
+        <!-- Creator -->
+        <div class="card">
+            <h2><i class="fas fa-user-circle" style="color:#6BCF7F; margin-right:8px;"></i>About the Creator</h2>
+            <p>
+                This game was built by a <strong>casual developer and Panda Group enthusiast</strong> who wanted to
+                blend the
+                addicting strategy of 2048 with the fun, familiar faces of the Panda Group community. The project
+                started
+                as a weekend experiment and grew into a polished, fully playable game over several iterations.
+            </p>
+            <p>
+                The creator has a background in front-end web development and takes special interest in small browser
+                games,
+                interactive media, and creative fan projects. The member photos used in the tiles are sourced with
+                respect
+                for the original content creators and their communities.
+            </p>
+            <p>
+                If you enjoy the game, the best way to support the project is simply to share it with friends. No
+                donations
+                are requested — just spread the word and enjoy the game!
+            </p>
+            <p>
+                <strong>Contact:</strong> For questions, feedback, bug reports, or takedown requests, please reach out
+                via
+                the contact form or email. All reports are reviewed within 5 business days.
+            </p>
+        </div>
+
+        <!-- Tech stack -->
+        <div class="card">
+            <h2><i class="fas fa-code" style="color:#FFD93D; margin-right:8px;"></i>How It's Built</h2>
+            <p>
+                2048 Panda Group is built with a deliberately lightweight stack — no heavy frameworks, just clean HTML,
+                CSS, and vanilla JavaScript. This keeps the game fast, accessible, and easy to maintain.
+            </p>
+            <div class="mt-3 mb-4">
+                <span class="tech-badge">HTML5</span>
+                <span class="tech-badge">Vanilla JavaScript (ES6+)</span>
+                <span class="tech-badge">Tailwind CSS (CDN)</span>
+                <span class="tech-badge">Google Fonts</span>
+                <span class="tech-badge">Font Awesome 6</span>
+                <span class="tech-badge">LocalStorage API</span>
+            </div>
+            <p>
+                The game logic is implemented in a single <code>game-v2.js</code> class-based module. The rendering uses
+                the DOM directly without a virtual DOM layer, keeping frame performance smooth. Touch support is handled
+                natively with the Touch Events API.
+            </p>
+            <p>
+                All member images are stored locally alongside the HTML, so the game loads instantly without depending
+                on
+                any external image CDN. The entire project is deployable as a static site to any hosting provider.
+            </p>
+        </div>
+
+        <!-- Mission -->
+        <div class="card">
+            <h2><i class="fas fa-heart" style="color:#FF6B6B; margin-right:8px;"></i>Our Mission</h2>
+            <p>
+                We believe that simple, fun games should be freely accessible to everyone. 2048 Panda Group will always
+                be free to play. There are no in-app purchases, no pay-to-win mechanics, no pop-ups, and no tracking
+                beyond what is described in our Privacy Policy.
+            </p>
+            <p>
+                We are committed to keeping the game update-friendly, adding new features and optimizations based on
+                player
+                feedback. Community input genuinely shapes future versions of the game.
+            </p>
+            <p style="margin-bottom:0;">
+                Thank you for playing — and good luck reaching 2048! 🐼
+            </p>
+        </div>
+
+    </div>
+
+    <footer>
+        <a href="index.html">Play the Game</a>
+        <span style="color:#555;">|</span>
+        <a href="privacy.html">Privacy Policy</a>
+        <p style="margin-top:10px;">© 2025 2048 Panda Group. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>

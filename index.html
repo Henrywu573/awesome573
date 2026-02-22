@@ -1,118 +1,141 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2048 熊猫堂版 - 合成游戏</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <title>2048 Panda Group – Merge & Evolve | Fun Puzzle Game</title>
+    <meta name="description"
+        content="Play 2048 Panda Group, a fun merge puzzle game featuring all 11 Panda Group members. Swipe or use arrow keys to merge tiles and unlock the legendary Grand Master tile!">
+    <meta name="keywords" content="2048, panda group, merge puzzle, tile game, browser game, free game">
+    <meta name="author" content="Panda Group Fan">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="2048 Panda Group – Merge & Evolve">
+    <meta property="og:description"
+        content="A fun merge puzzle game featuring all 11 Panda Group members. Can you reach the Grand Master tile?">
+    <meta property="og:image" content="og-image.png">
+    <meta property="og:url" content="">
+    <meta property="og:site_name" content="2048 Panda Group">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="2048 Panda Group – Merge & Evolve">
+    <meta name="twitter:description"
+        content="Merge Panda Group member tiles and reach the legendary 2048 Grand Master!">
+    <meta name="twitter:image" content="og-image.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3593835256513437"
+        crossorigin="anonymous"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #FFF8E7 0%, #FFE8D6 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
-        
+
         .title-font {
             font-family: 'Fredoka One', cursive;
         }
-        
-        /* 背景装饰动物剪影 */
+
+        /* Background decorations */
         .bg-decoration {
             position: fixed;
             opacity: 0.03;
             pointer-events: none;
             z-index: 0;
         }
-        
+
         .bg-paw-1 {
             top: 10%;
             left: 5%;
             font-size: 120px;
             transform: rotate(-15deg);
         }
-        
+
         .bg-paw-2 {
             bottom: 15%;
             right: 8%;
             font-size: 150px;
             transform: rotate(25deg);
         }
-        
+
         .bg-heart {
             top: 60%;
             left: 10%;
             font-size: 80px;
             transform: rotate(-10deg);
         }
-        
-        /* 游戏容器 */
+
+        /* Game container */
         .game-container {
             position: relative;
             z-index: 1;
         }
-        
-        /* 分数卡片悬浮效果 */
+
+        /* Score cards */
         .score-card {
             background: white;
             border-radius: 20px;
             padding: 16px 24px;
             box-shadow: 0 8px 24px rgba(255, 107, 107, 0.15);
-            transform: translateY(0);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .score-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 32px rgba(255, 107, 107, 0.2);
         }
-        
+
         .score-card-offset {
-            transform: rotate(-1deg) translateY(0);
+            transform: rotate(-1deg);
         }
-        
+
         .score-card-offset:hover {
             transform: rotate(-1deg) translateY(-4px);
         }
-        
-        /* 游戏板 */
+
+        /* Game board */
         .game-board {
             background: #F4E1C1;
             border-radius: 24px;
             padding: 20px;
-            box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.1),
-                inset 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), inset 0 2px 8px rgba(0, 0, 0, 0.05);
             transform: rotate(0.5deg);
             position: relative;
-            touch-action: none; /* 禁止触摸滚动 */
+            touch-action: none;
             -webkit-user-select: none;
             user-select: none;
         }
-        
-        /* 游戏网格容器 */
+
         #gameGrid {
             position: relative;
         }
-        
-        /* 格子 */
+
+        /* Grid cells */
         .grid-cell {
             background: #E8D5B7;
             border-radius: 16px;
@@ -124,8 +147,8 @@
             overflow: visible;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
-        /* 动物方块 */
+
+        /* Tiles */
         .tile {
             width: 100%;
             height: 100%;
@@ -138,14 +161,14 @@
             overflow: hidden;
             transition: all 0.15s ease-in-out;
         }
-        
+
         .tile img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 16px;
         }
-        
+
         .tile-value {
             position: absolute;
             bottom: 4px;
@@ -158,23 +181,55 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
-        /* 动物方块颜色（备用，当图片未加载时显示） */
-        .tile-2 { background: linear-gradient(135deg, #FFB6C1 0%, #FF9CB0 100%); }
-        .tile-4 { background: linear-gradient(135deg, #FFD93D 0%, #FFC933 100%); }
-        .tile-8 { background: linear-gradient(135deg, #6BCF7F 0%, #5BC06F 100%); }
-        .tile-16 { background: linear-gradient(135deg, #87CEEB 0%, #77BEDB 100%); }
-        .tile-32 { background: linear-gradient(135deg, #FFA07A 0%, #FF9070 100%); }
-        .tile-64 { background: linear-gradient(135deg, #DDA0DD 0%, #CD90CD 100%); }
-        .tile-128 { background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%); }
-        .tile-256 { background: linear-gradient(135deg, #FF8C00 0%, #FF7C00 100%); }
-        .tile-512 { background: linear-gradient(135deg, #C0C0C0 0%, #B0B0B0 100%); }
-        .tile-1024 { background: linear-gradient(135deg, #FFE4E1 0%, #FFD4D1 100%); }
-        .tile-2048 { background: linear-gradient(135deg, #FFD700 0%, #FF69B4 100%); }
-        
-        /* 按钮样式 */
+
+        /* Tile fallback colors */
+        .tile-2 {
+            background: linear-gradient(135deg, #FFB6C1, #FF9CB0);
+        }
+
+        .tile-4 {
+            background: linear-gradient(135deg, #FFD93D, #FFC933);
+        }
+
+        .tile-8 {
+            background: linear-gradient(135deg, #6BCF7F, #5BC06F);
+        }
+
+        .tile-16 {
+            background: linear-gradient(135deg, #87CEEB, #77BEDB);
+        }
+
+        .tile-32 {
+            background: linear-gradient(135deg, #FFA07A, #FF9070);
+        }
+
+        .tile-64 {
+            background: linear-gradient(135deg, #DDA0DD, #CD90CD);
+        }
+
+        .tile-128 {
+            background: linear-gradient(135deg, #FFD700, #FFC700);
+        }
+
+        .tile-256 {
+            background: linear-gradient(135deg, #FF8C00, #FF7C00);
+        }
+
+        .tile-512 {
+            background: linear-gradient(135deg, #C0C0C0, #B0B0B0);
+        }
+
+        .tile-1024 {
+            background: linear-gradient(135deg, #FFE4E1, #FFD4D1);
+        }
+
+        .tile-2048 {
+            background: linear-gradient(135deg, #FFD700, #FF69B4);
+        }
+
+        /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, #FF6B6B 0%, #FF5555 100%);
+            background: linear-gradient(135deg, #FF6B6B, #FF5555);
             color: white;
             border: none;
             border-radius: 16px;
@@ -188,17 +243,17 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
         }
-        
+
         .btn-primary:active {
             transform: translateY(0);
         }
-        
-        /* 游戏结束遮罩 */
+
+        /* Game over overlay */
         .game-over-overlay {
             position: absolute;
             top: 0;
@@ -214,114 +269,233 @@
             gap: 20px;
             z-index: 10;
         }
-        
+
         .game-over-overlay.active {
             display: flex;
         }
-        
-        /* 动画 */
+
+        /* Animations */
         @keyframes slideIn {
             from {
                 transform: scale(0);
                 opacity: 0;
             }
+
             to {
                 transform: scale(1);
                 opacity: 1;
             }
         }
-        
+
         .tile-new {
             animation: slideIn 0.2s ease-out;
         }
-        
+
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
-        
+
         .float-animation {
             animation: float 3s ease-in-out infinite;
         }
-        
-        /* 响应式 */
+
+        /* How to Play section */
+        .how-to-play-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .how-to-play-table th {
+            background: linear-gradient(135deg, #FF6B6B, #FF5555);
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .how-to-play-table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid #F0E0CC;
+            color: #444;
+        }
+
+        .how-to-play-table tr:nth-child(even) td {
+            background: #FFF8F0;
+        }
+
+        .how-to-play-table tr:hover td {
+            background: #FFE8D6;
+        }
+
+        /* Member progression */
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .member-card {
+            text-align: center;
+            background: white;
+            border-radius: 12px;
+            padding: 8px 4px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s;
+        }
+
+        .member-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .member-card img {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 4px;
+            display: block;
+            border: 2px solid #FFD93D;
+        }
+
+        .member-card .member-value {
+            font-weight: 700;
+            font-size: 13px;
+            color: #FF6B6B;
+        }
+
+        .member-card .member-label {
+            font-size: 10px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        /* Footer */
+        footer {
+            background: #2C3E50;
+            color: #aaa;
+            padding: 32px 24px;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #FFD93D;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        footer .footer-author {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
         @media (max-width: 768px) {
             .game-board {
                 transform: rotate(0);
             }
+
+            .member-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .member-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
+
 <body>
-    <!-- 背景装饰 -->
+    <!-- Background decorations -->
     <div class="bg-decoration bg-paw-1">🐾</div>
     <div class="bg-decoration bg-paw-2">🐾</div>
     <div class="bg-decoration bg-heart">❤️</div>
-    
+
     <div class="game-container min-h-screen py-8 px-4">
         <div class="max-w-6xl mx-auto">
-            <!-- 标题区域 -->
+
+            <!-- Header -->
             <div class="text-center mb-8">
-                <h1 class="title-font text-6xl mb-3" style="color: #FF6B6B;">
-                    <i class="fas fa-paw" style="color: #FFD93D;"></i>
-                    2048 熊猫堂
+                <h1 class="title-font text-6xl mb-3" style="color:#FF6B6B;">
+                    <i class="fas fa-paw" style="color:#FFD93D;"></i>
+                    2048 Panda Group
                 </h1>
-                <p class="text-lg text-gray-600">合并相同的成员，升级熊猫堂！</p>
+                <p class="text-lg text-gray-600">Merge identical members and evolve your Panda Group!</p>
             </div>
-            
-            <!-- 游戏主区域 -->
+
+            <!-- Game main area -->
             <div class="grid md:grid-cols-12 gap-8 items-start">
-                <!-- 左侧信息栏 -->
+
+                <!-- Left sidebar -->
                 <div class="md:col-span-4 space-y-6">
-                    <!-- 分数卡片 -->
+
+                    <!-- Score cards -->
                     <div class="score-card">
                         <div class="text-sm text-gray-500 mb-1 flex items-center gap-2">
-                            <i class="fas fa-star" style="color: #FFD93D;"></i>
-                            当前分数
+                            <i class="fas fa-star" style="color:#FFD93D;"></i>
+                            Current Score
                         </div>
-                        <div class="text-4xl font-bold" style="color: #FF6B6B;">0</div>
+                        <div class="text-4xl font-bold" style="color:#FF6B6B;">0</div>
                     </div>
-                    
+
                     <div class="score-card score-card-offset">
                         <div class="text-sm text-gray-500 mb-1 flex items-center gap-2">
-                            <i class="fas fa-trophy" style="color: #FFD93D;"></i>
-                            最高分
+                            <i class="fas fa-trophy" style="color:#FFD93D;"></i>
+                            Best Score
                         </div>
-                        <div class="text-3xl font-bold" style="color: #6BCF7F;">0</div>
+                        <div class="text-3xl font-bold" style="color:#6BCF7F;">0</div>
                     </div>
-                    
-                    <!-- 控制按钮 -->
+
+                    <!-- Control buttons -->
                     <div class="space-y-3">
                         <button class="btn-primary w-full" id="newGameBtn">
                             <i class="fas fa-rotate"></i>
-                            新游戏
+                            New Game
                         </button>
-                        <button class="btn-primary w-full" style="background: linear-gradient(135deg, #6BCF7F 0%, #5BC06F 100%);" id="undoBtn">
+                        <button class="btn-primary w-full" id="undoBtn"
+                            style="background:linear-gradient(135deg, #6BCF7F, #5BC06F);">
                             <i class="fas fa-undo"></i>
-                            撤销
+                            Undo
                         </button>
                     </div>
-                    
-                    <!-- 说明卡片 -->
+
+                    <!-- Instructions card -->
                     <div class="score-card">
-                        <h3 class="font-semibold text-lg mb-2 flex items-center gap-2">
-                            <i class="fas fa-circle-info" style="color: #FF6B6B;"></i>
-                            游戏说明
-                        </h3>
+                        <h2 class="font-semibold text-lg mb-2 flex items-center gap-2">
+                            <i class="fas fa-circle-info" style="color:#FF6B6B;"></i>
+                            How to Play
+                        </h2>
                         <div class="text-sm text-gray-600 space-y-2">
-                            <p><i class="fas fa-keyboard text-gray-400"></i> 使用方向键移动</p>
-                            <p><i class="fas fa-hand-pointer text-gray-400"></i> 触摸屏可滑动</p>
-                            <p><i class="fas fa-users text-gray-400"></i> 合并相同成员升级</p>
-                            <p><i class="fas fa-crown text-gray-400"></i> 目标：合成堂主(2048)</p>
+                            <p><i class="fas fa-keyboard text-gray-400"></i> Arrow keys to move tiles</p>
+                            <p><i class="fas fa-hand-pointer text-gray-400"></i> Swipe on touch screens</p>
+                            <p><i class="fas fa-users text-gray-400"></i> Merge identical members to evolve</p>
+                            <p><i class="fas fa-crown text-gray-400"></i> Goal: Reach the Grand Master (2048)!</p>
                         </div>
                     </div>
                 </div>
-                
-                <!-- 游戏板 -->
+
+                <!-- Game board -->
                 <div class="md:col-span-8">
                     <div class="game-board relative">
                         <div class="grid grid-cols-4 gap-4" id="gameGrid">
-                            <!-- 16个格子 -->
                             <div class="grid-cell"></div>
                             <div class="grid-cell"></div>
                             <div class="grid-cell"></div>
@@ -339,35 +513,283 @@
                             <div class="grid-cell"></div>
                             <div class="grid-cell"></div>
                         </div>
-                        
-                        <!-- 游戏结束遮罩 -->
+
+                        <!-- Game over overlay -->
                         <div class="game-over-overlay" id="gameOverOverlay">
                             <div class="text-6xl mb-4">😿</div>
-                            <div class="text-3xl font-bold title-font" style="color: #FF6B6B;">游戏结束</div>
-                            <div class="text-xl text-gray-600">最终分数: <span id="finalScore">0</span></div>
+                            <div class="text-3xl font-bold title-font" style="color:#FF6B6B;">Game Over!</div>
+                            <div class="text-xl text-gray-600">Final Score: <span id="finalScore">0</span></div>
                             <button class="btn-primary mt-4" onclick="location.reload()">
                                 <i class="fas fa-rotate"></i>
-                                再来一局
+                                Play Again
                             </button>
                         </div>
                     </div>
-                    
-                    <!-- 成员图鉴 -->
+
+                    <!-- Member progression -->
                     <div class="mt-8 score-card">
-                        <h3 class="font-semibold text-lg mb-4 flex items-center gap-2">
-                            <i class="fas fa-book" style="color: #FFD93D;"></i>
-                            熊猫堂成员
-                        </h3>
-                        <div class="text-sm text-gray-600">
-                            <p class="mb-2"><i class="fas fa-info-circle text-gray-400"></i> 从2开始合成</p>
-                            <p><i class="fas fa-trophy text-gray-400"></i> 挑战目标：2048 堂主</p>
+                        <h2 class="font-semibold text-lg mb-4 flex items-center gap-2">
+                            <i class="fas fa-book" style="color:#FFD93D;"></i>
+                            Member Progression (2 → 2048)
+                        </h2>
+                        <div class="member-grid">
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/1.jpeg" alt="Panda Cub – Level 2"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">2</div>
+                                <div class="member-label">Panda Cub</div>
+                            </div>
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/2.jpeg" alt="Bamboo Scout – Level 4"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">4</div>
+                                <div class="member-label">Bamboo Scout</div>
+                            </div>
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/3.jpeg" alt="Mountain Guard – Level 8"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">8</div>
+                                <div class="member-label">Mtn Guard</div>
+                            </div>
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/4.jpeg" alt="Forest Keeper – Level 16"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">16</div>
+                                <div class="member-label">Forest Keeper</div>
+                            </div>
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/5.jpeg" alt="River Ranger – Level 32"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">32</div>
+                                <div class="member-label">River Ranger</div>
+                            </div>
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/6.jpeg" alt="Peak Climber – Level 64"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">64</div>
+                                <div class="member-label">Peak Climber</div>
+                            </div>
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/7.jpeg" alt="Valley Elder – Level 128"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">128</div>
+                                <div class="member-label">Valley Elder</div>
+                            </div>
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/8.jpeg" alt="Sky Ranger – Level 256"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">256</div>
+                                <div class="member-label">Sky Ranger</div>
+                            </div>
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/9.jpeg" alt="Cloud Walker – Level 512"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">512</div>
+                                <div class="member-label">Cloud Walker</div>
+                            </div>
+                            <div class="member-card">
+                                <img src="images/xiongmaotang/10.jpeg" alt="Grand Elder – Level 1024"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value">1024</div>
+                                <div class="member-label">Grand Elder</div>
+                            </div>
+                            <div class="member-card"
+                                style="border: 2px solid #FFD700; box-shadow: 0 0 12px rgba(255,215,0,0.4);">
+                                <img src="images/xiongmaotang/11.jpeg" alt="Grand Master – Level 2048"
+                                    onerror="this.style.display='none'">
+                                <div class="member-value" style="color:#FF8C00;">2048</div>
+                                <div class="member-label" style="color:#FF8C00; font-weight:600;">Grand Master</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    
+
+            <!-- ===== How to Play – Detailed Section ===== -->
+            <section class="mt-16" id="how-to-play">
+                <div class="score-card">
+                    <h2 class="title-font text-3xl mb-6 flex items-center gap-3" style="color:#FF6B6B;">
+                        <i class="fas fa-gamepad" style="color:#FFD93D;"></i>
+                        Complete Guide: How to Play 2048 Panda Group
+                    </h2>
+
+                    <p class="text-gray-600 mb-6 text-base leading-relaxed">
+                        2048 Panda Group is a number-merging puzzle game inspired by the classic 2048. The twist? Every
+                        tile is a real photo of a Panda Group member. Your goal is to keep merging until you unlock the
+                        legendary <strong>Grand Master (2048)</strong> tile. Every merge scores points, and the best
+                        scores are saved to your browser.
+                    </p>
+
+                    <!-- Step-by-step table -->
+                    <h3 class="font-semibold text-xl mb-3" style="color:#2C3E50;">Step-by-Step Rules</h3>
+                    <div class="overflow-x-auto mb-8 rounded-xl overflow-hidden shadow-sm">
+                        <table class="how-to-play-table">
+                            <thead>
+                                <tr>
+                                    <th style="border-radius:0;">#</th>
+                                    <th>Action</th>
+                                    <th>What Happens</th>
+                                    <th>Tip</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td><i class="fas fa-play-circle text-green-500"></i> <strong>Start the
+                                            game</strong></td>
+                                    <td>Two random tiles (value 2 or 4) appear on the 4×4 board</td>
+                                    <td>Your first move sets the direction — think before swiping!</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td><i class="fas fa-arrows-alt text-blue-500"></i> <strong>Swipe or press arrow
+                                            keys</strong></td>
+                                    <td>All tiles slide in that direction as far as possible</td>
+                                    <td>Use ↑ ↓ ← → on desktop; swipe on mobile</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td><i class="fas fa-equals text-yellow-500"></i> <strong>Two equal tiles
+                                            collide</strong></td>
+                                    <td>They merge into one tile with double the value — and you earn those points!</td>
+                                    <td>Only one merge per tile per move</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td><i class="fas fa-plus text-purple-500"></i> <strong>New tile spawns</strong>
+                                    </td>
+                                    <td>A new tile (2 or 4) appears in a random empty cell after every move</td>
+                                    <td>Keep the board from filling up by merging frequently</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td><i class="fas fa-undo text-green-400"></i> <strong>Hit Undo</strong></td>
+                                    <td>Reverts to your previous board state (up to 10 steps)</td>
+                                    <td>Use undo sparingly — save it for mistakes</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td><i class="fas fa-crown text-yellow-400"></i> <strong>Reach 2048</strong></td>
+                                    <td>You unlock the Grand Master tile and win!</td>
+                                    <td>The game continues so you can go even higher</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td><i class="fas fa-skull-crossbones text-red-400"></i> <strong>Board fills
+                                            up</strong></td>
+                                    <td>If no moves remain, the game ends</td>
+                                    <td>Always try to keep at least one corner reserved for big tiles</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Strategy tips -->
+                    <h3 class="font-semibold text-xl mb-3" style="color:#2C3E50;">Pro Strategy Tips</h3>
+                    <div class="grid md:grid-cols-3 gap-4 mb-6">
+                        <div class="p-4 rounded-xl" style="background:#FFF0E8; border-left: 4px solid #FF6B6B;">
+                            <div class="font-semibold mb-1">🏔️ Corner Strategy</div>
+                            <div class="text-sm text-gray-600">Keep your highest tile in one corner. Build around it in
+                                a snake pattern.</div>
+                        </div>
+                        <div class="p-4 rounded-xl" style="background:#F0FFF4; border-left: 4px solid #6BCF7F;">
+                            <div class="font-semibold mb-1">🚫 Avoid One Direction</div>
+                            <div class="text-sm text-gray-600">Try not to swipe in all four directions randomly — pick
+                                2-3 preferred directions.</div>
+                        </div>
+                        <div class="p-4 rounded-xl" style="background:#FFF8E7; border-left: 4px solid #FFD93D;">
+                            <div class="font-semibold mb-1">🔗 Chain Merges</div>
+                            <div class="text-sm text-gray-600">Build chains so one swipe causes multiple merges — this
+                                maximizes your score.</div>
+                        </div>
+                    </div>
+
+                    <!-- Scoring table -->
+                    <h3 class="font-semibold text-xl mb-3" style="color:#2C3E50;">Scoring Reference</h3>
+                    <div class="overflow-x-auto rounded-xl overflow-hidden shadow-sm">
+                        <table class="how-to-play-table">
+                            <thead>
+                                <tr>
+                                    <th>Merge Result</th>
+                                    <th>Points Earned</th>
+                                    <th>Member Unlocked</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2 + 2 = <strong>4</strong></td>
+                                    <td>+4 pts</td>
+                                    <td>Bamboo Scout</td>
+                                </tr>
+                                <tr>
+                                    <td>4 + 4 = <strong>8</strong></td>
+                                    <td>+8 pts</td>
+                                    <td>Mountain Guard</td>
+                                </tr>
+                                <tr>
+                                    <td>8 + 8 = <strong>16</strong></td>
+                                    <td>+16 pts</td>
+                                    <td>Forest Keeper</td>
+                                </tr>
+                                <tr>
+                                    <td>16 + 16 = <strong>32</strong></td>
+                                    <td>+32 pts</td>
+                                    <td>River Ranger</td>
+                                </tr>
+                                <tr>
+                                    <td>32 + 32 = <strong>64</strong></td>
+                                    <td>+64 pts</td>
+                                    <td>Peak Climber</td>
+                                </tr>
+                                <tr>
+                                    <td>64 + 64 = <strong>128</strong></td>
+                                    <td>+128 pts</td>
+                                    <td>Valley Elder</td>
+                                </tr>
+                                <tr>
+                                    <td>128 + 128 = <strong>256</strong></td>
+                                    <td>+256 pts</td>
+                                    <td>Sky Ranger</td>
+                                </tr>
+                                <tr>
+                                    <td>256 + 256 = <strong>512</strong></td>
+                                    <td>+512 pts</td>
+                                    <td>Cloud Walker</td>
+                                </tr>
+                                <tr>
+                                    <td>512 + 512 = <strong>1024</strong></td>
+                                    <td>+1,024 pts</td>
+                                    <td>Grand Elder</td>
+                                </tr>
+                                <tr>
+                                    <td>1024 + 1024 = <strong>2048</strong></td>
+                                    <td>+2,048 pts</td>
+                                    <td>🏆 Grand Master!</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- end max-w-6xl -->
+    </div><!-- end game-container -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-author">Created by Panda Group Fan</div>
+        <p style="margin-bottom:12px;">A free browser puzzle game inspired by the classic 2048 — featuring Panda Group
+            members.<br>
+            Best scores are saved locally in your browser. No account required.</p>
+        <nav>
+            <a href="about.html">About</a>
+            <span style="color:#555;">|</span>
+            <a href="privacy.html">Privacy Policy</a>
+        </nav>
+        <p style="margin-top:16px; font-size:12px; color:#555;">© 2025 2048 Panda Group. All rights reserved.</p>
+    </footer>
+
     <script src="game-v2.js"></script>
 </body>
+
 </html>
